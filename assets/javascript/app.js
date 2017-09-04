@@ -2,25 +2,10 @@ $(document).ready(function(){
 
 $(".videos").hide()
 
-//timer for question & answer(s) page
-function longTimer(){
-	var count = 30;
 
-	var counter = setInterval(timer, 1000);
-	function timer(){
-		count = count-1;
-		if (count <= 0){
-			clearInterval(counter);
-			console.log("Time's out!")
-		}
-		console.log(count)
-		$("#timerDisplay").html(count)
-	}
-
-}
 //timer for correct answer page
 function shortTimer(){
-	var count = 8;
+	var count = 6;
 
 	var counter = setInterval(timer, 1000);
 	function timer(){
@@ -31,12 +16,6 @@ function shortTimer(){
 		console.log(count)
 		$("#timerDisplay").html(count)
 	}
-}
-
-//stops timers
-function stop(){
-	clearInterval(intervalId)
-	clockRunning = false;
 }
 
 
@@ -53,6 +32,7 @@ function stop(){
 			//{quote: "Carpe Diem boys. Seize the day.", answers: ["Good Will Hunting", "The Truman Show", "Mrs. Doubtfire","Dead Poets Society"], correctAnswer: "Dead Poets Society"}
 		]
 	}
+
 		for (i in quizQuestion.question){
 			x += quizQuestion.question[i].quote;
 			correct += quizQuestion.question[i].correctAnswer;
@@ -94,49 +74,73 @@ function timesUp(){
 }
 
 //start button user selects to start the game
-$("#startBtn").on("click", function(){
+$("#startBtn").click(function(game){
 	console.log("start this motha")
 	$("#start").empty()
-	longTimer()
 
-//display text for the quiz question to the user
-$("#questionDisplay").text(quizQuestion.question[i].quote)
+
+	longTimer()
+	//display text for the quiz question to the user
+	$("#questionDisplay").text(quizQuestion.question[i].quote)
 
 	//display answer options as buttons	
 		$("#answer1").text(quizQuestion.question[i].answers[0])
 		$("#answer2").text(quizQuestion.question[i].answers[1])
 		$("#answer3").text(quizQuestion.question[i].answers[2])
 		$("#answer4").text(quizQuestion.question[i].answers[3])
+
+//timer for question & answer(s) page
+function longTimer(){
+	var count = 30;
+
+	var counter = setInterval(timer, 1000);
 	
-		$(".answerOption").on("click", function(){
+	function timer(){
+		count = count-1;
+		
+		if (count <= 0){
+			clearInterval(counter);
+			console.log("Time's out!")
+			timesUp()
+		}
+		console.log(count)
+		$("#timerDisplay").html(count)
+	
+	$(".answerOption").on("click", function(){
 			console.log(this.value)
 
-			if (this.value===quizQuestion.question[i].correctAnswer){
+		 if (this.value===quizQuestion.question[i].correctAnswer){
 				console.log("Correct!")
 				$("#questionDisplay").text("You got it right!")
+				clearInterval(counter)
 				correctPage()
 				return
 			}
 
-			else if (this.value!==quizQuestion.question[i].correctAnswer){
+		else if (this.value!==quizQuestion.question[i].correctAnswer){
 				console.log("Sorry, nope")
+				clearInterval(counter)
 				wrongPage()
 				return
 			}
-			else {
-				timesUp()
-				return
-			}
+
+		
 		})
 
+	}		
 
+}
+
+
+})
 
 })
 
 
 
 
-})
+
+
 
 
 
