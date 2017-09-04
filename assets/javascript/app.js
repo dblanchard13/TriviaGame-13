@@ -12,7 +12,6 @@ function longTimer(){
 		if (count <= 0){
 			clearInterval(counter);
 			console.log("Time's out!")
-			timesUp();
 		}
 		console.log(count)
 		$("#timerDisplay").html(count)
@@ -28,9 +27,9 @@ function shortTimer(){
 		count = count-1;
 		if (count <= 0){
 			clearInterval(counter);
-
-			correctPage()
 		}
+		console.log(count)
+		$("#timerDisplay").html(count)
 	}
 }
 
@@ -65,7 +64,7 @@ function stop(){
 			}
 		
 		}
-	
+
 		$("#answer1").val(quizQuestion.question[i].answers[0])
 		$("#answer2").val(quizQuestion.question[i].answers[1])
 		$("#answer3").val(quizQuestion.question[i].answers[2])
@@ -74,8 +73,9 @@ function stop(){
 
 //wrong answer display... not working
 function wrongPage(){
-	$("gameDisplay").text("Sorry, wrong answer." + " Correct answer is: " + quizQuestion.question[i].correctAnswer)
+	$("#gameDisplay").text("Sorry, wrong answer." + " Correct answer is: " + quizQuestion.question[i].correctAnswer)
 	shortTimer()
+	return
 }
 
 //correct answer display		
@@ -83,12 +83,14 @@ function correctPage(){
 	$("#gameDisplay").text("You're right!" + " Correct Answer is: " + quizQuestion.question[i].correctAnswer)
 	shortTimer()
 	$(".videos").show()//video display not working
+	return
 }
 
 //time out display... flashes for a second or 2 when timer finishes, then plays correctPage
 function timesUp(){
 	$("#gameDisplay").text("Time is up." + " Correct Answer is: " +quizQuestion.question[i].correctAnswer)
 	shortTimer()
+	return
 }
 
 //start button user selects to start the game
@@ -113,13 +115,16 @@ $("#questionDisplay").text(quizQuestion.question[i].quote)
 				console.log("Correct!")
 				$("#questionDisplay").text("You got it right!")
 				correctPage()
+				return
 			}
 
 			else if (this.value!==quizQuestion.question[i].correctAnswer){
 				console.log("Sorry, nope")
 				wrongPage()
+				return
 			}
 			else {
+				timesUp()
 				return
 			}
 		})
@@ -131,9 +136,8 @@ $("#questionDisplay").text(quizQuestion.question[i].quote)
 
 
 
-
-
-
-
-
 })
+
+
+
+
